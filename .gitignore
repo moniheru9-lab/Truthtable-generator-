@@ -1,81 +1,22 @@
 import streamlit as st
-import itertools
 
-st.set_page_config(page_title="Truth Table Generator + Quiz")
+st.title("My App with Aim & Quiz")
 
-# 🎯 AIM SECTION
-st.title("🧠 Truth Table Generator")
+# AIM SECTION
+st.header("🎯 Your Aim")
+aim = st.text_input("Enter your aim:")
+if aim:
+    st.success(f"Your aim is: {aim}")
 
-st.header("🎯 Aim")
-st.write("""
-To generate a truth table for a given logical expression and to test understanding 
-of logic gates using a simple quiz.
-""")
+# QUIZ SECTION
+st.header("🧠 Quick Quiz")
 
-# 📥 INPUT SECTION
-st.header("📥 Enter Logical Expression")
-expr = st.text_input("Use variables like A, B, C and operators (and, or, not):", "A and B")
+question = "What is 2 + 2?"
+options = ["2", "3", "4", "5"]
+answer = st.radio(question, options)
 
-# FUNCTION TO EVALUATE
-def evaluate_expression(expr, values, variables):
-    local_dict = dict(zip(variables, values))
-    return eval(expr, {}, local_dict)
-
-# GENERATE TRUTH TABLE
-if st.button("Generate Truth Table"):
-    variables = sorted(set([char for char in expr if char.isalpha()]))
-    
-    st.subheader("📊 Truth Table")
-    
-    rows = list(itertools.product([0, 1], repeat=len(variables)))
-    
-    table = []
-    
-    for row in rows:
-        bool_row = [bool(val) for val in row]
-        result = evaluate_expression(expr, bool_row, variables)
-        table.append(list(row) + [int(result)])
-    
-    # Display table
-    header = variables + ["Result"]
-    st.write(header)
-    for row in table:
-        st.write(row)
-
-# ❓ QUIZ SECTION
-st.header("❓ Quick Quiz")
-
-q1 = st.radio(
-    "1. What is the output of A AND B when A=1 and B=0?",
-    ("0", "1")
-)
-
-q2 = st.radio(
-    "2. NOT(1) equals?",
-    ("0", "1")
-)
-
-q3 = st.radio(
-    "3. A OR B is 1 when?",
-    ("Both are 0", "At least one is 1")
-)
-
-if st.button("Submit Quiz"):
-    score = 0
-    
-    if q1 == "0":
-        score += 1
-    if q2 == "0":
-        score += 1
-    if q3 == "At least one is 1":
-        score += 1
-    
-    st.success(f"✅ Your Score: {score}/3")
-    
-    if score == 3:
-        st.balloons()
-        st.write("Excellent! 🎉")
-    elif score == 2:
-        st.write("Good job! 👍")
+if st.button("Submit Answer"):
+    if answer == "4":
+        st.success("Correct! 🎉")
     else:
-        st.write("Keep practicing! 💡")
+        st.error("Wrong answer 😢")
