@@ -1,22 +1,61 @@
 import streamlit as st
 
-st.title("My App with Aim & Quiz")
+st.title("🔌 Digital Electronics Practice App")
 
 # AIM SECTION
-st.header("🎯 Your Aim")
-aim = st.text_input("Enter your aim:")
-if aim:
-    st.success(f"Your aim is: {aim}")
+st.header("🎯 Aim of the Experiment")
+st.write("""
+To study and verify the truth table of basic logic gates like AND, OR, and NOT.
+""")
+
+user_aim = st.text_input("Write your understanding of the aim:")
+if user_aim:
+    st.success(f"Your Aim: {user_aim}")
+
+# TRUTH TABLE DISPLAY
+st.header("📊 AND Gate Truth Table")
+
+st.table({
+    "A": [0, 0, 1, 1],
+    "B": [0, 1, 0, 1],
+    "Output (A AND B)": [0, 0, 0, 1]
+})
 
 # QUIZ SECTION
-st.header("🧠 Quick Quiz")
+st.header("🧠 Quiz on Truth Table")
 
-question = "What is 2 + 2?"
-options = ["2", "3", "4", "5"]
-answer = st.radio(question, options)
+score = 0
 
-if st.button("Submit Answer"):
-    if answer == "4":
-        st.success("Correct! 🎉")
-    else:
-        st.error("Wrong answer 😢")
+# Question 1
+q1 = st.radio(
+    "1. What is the output of AND gate when A=1 and B=1?",
+    ["0", "1"],
+    key="q1"
+)
+
+# Question 2
+q2 = st.radio(
+    "2. What is the output of OR gate when A=0 and B=1?",
+    ["0", "1"],
+    key="q2"
+)
+
+# Question 3
+q3 = st.radio(
+    "3. NOT gate inverts the input. What is output when input is 0?",
+    ["0", "1"],
+    key="q3"
+)
+
+if st.button("Submit Quiz"):
+    if q1 == "1":
+        score += 1
+    if q2 == "1":
+        score += 1
+    if q3 == "1":
+        score += 1
+
+    st.success(f"Your Score: {score}/3 🎉")
+
+    if score == 3:
+        st.balloons()
